@@ -1,5 +1,6 @@
 const board = document.getElementById('board');
 const resetButton = document.getElementById('reset');
+const message = document.getElementById('message');
 
 let state = ['>', '>', '>', '_', '<', '<', '<'];
 
@@ -26,6 +27,7 @@ function updateBoard() {
             cell.addEventListener('click', handleClick);
         }
     }
+    checkWin();
 }
 
 function handleClick(event) {
@@ -56,8 +58,16 @@ function handleClick(event) {
 
 function resetGame() {
     state = ['>', '>', '>', '_', '<', '<', '<'];
+    message.textContent = '';
     updateBoard();
 }
 resetButton.addEventListener('click', resetGame);
+
+function checkWin() {
+    const winState = ['<', '<', '<', '_', '>', '>', '>'];
+    if (state.join('') === winState.join('')) {
+        message.textContent = 'Você venceu!';
+    }
+}
 
 updateBoard();
