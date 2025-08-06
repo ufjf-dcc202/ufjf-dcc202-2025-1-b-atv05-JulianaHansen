@@ -2,17 +2,55 @@ const board = document.getElementById('board');
 
 let state = ['>', '>', '>', '_', '<', '<', '<'];
 
-for (let i = 0; i < 7; i++) {
-    const cell = document.createElement('div');
-    cell.className = 'cell';
-    const frog = document.createElement('div');
-    frog.className = 'frog';
-    if (state[i] === '>') {
-        frog.classList.add('frog-right');
-    } else if (state[i] === '<') {
-        frog.classList.add('frog-left');
+function updateBoard() {
+    board.innerHTML = '';
+
+    for (let i = 0; i < 7; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.dataset.index = i;
+
+        const frog = document.createElement('div');
+        frog.className = 'frog';
+        if (state[i] === '>') {
+            frog.classList.add('frog-right');
+        } else if (state[i] === '<') {
+            frog.classList.add('frog-left');
+        }
+
+        cell.appendChild(frog);
+        board.appendChild(cell);
+
+        if (state[i] === '>' || state[i] === '<') {
+            cell.addEventListener('click', handleClick);
+        }
     }
-    cell.appendChild(frog);
-    board.appendChild(cell);
 }
 
+function handleClick(event) {
+    const index = Number(event.currentTarget.dataset.index);
+    const frog = state[index];
+    let target = -1;
+
+    if (frog === '>') {
+        if (state[index + 1] === '_') {
+            target = index + 1;
+        } else if (state[index + 2] === '_' && (state[index + 1] === '<' || state[index + 1] === '>')) {
+            target = index + 2;
+        }
+    } else if (frog === '<') {
+        if (state[index - 1] === '_') {
+            target = index - 1;
+        } else if (state[index - 2] === '_' && (state[index - 1] === '<' || state[index - 1] === '>')) {
+            target = index - 2;
+        }
+    }
+
+    if (target !== -1) {
+        state[target] = frog;
+        state[index] = '_';
+        updateBoard();
+    }
+}
+
+updateBoard();
