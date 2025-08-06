@@ -1,4 +1,5 @@
 const board = document.getElementById('board');
+const resetButton = document.getElementById('reset');
 
 let state = ['>', '>', '>', '_', '<', '<', '<'];
 
@@ -52,5 +53,11 @@ function handleClick(event) {
         updateBoard();
     }
 }
+
+function resetGame() {
+    state = ['>', '>', '>', '_', '<', '<', '<'];
+    updateBoard();
+}
+resetButton.addEventListener('click', resetGame);
 
 updateBoard();
